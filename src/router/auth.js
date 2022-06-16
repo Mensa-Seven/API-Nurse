@@ -69,9 +69,10 @@ router.post('/login', async(req, res) => {
 })
 
 router.delete("/logout",authMiddleware , async (req, res) => {
+	const token = req.query.token || req.headers['x-access-token']
+	const result = verifyToken(token)
 
-	const user = await User.findById(req.user.id)
-	console.log(user);
+	const user = await User.findById(result.user_id.sub)
 	user.tokenVersion += 1
 	await user.save()
 	res.send({ status: "sucess" })

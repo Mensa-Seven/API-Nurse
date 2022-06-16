@@ -6,7 +6,6 @@ const wait  = (ms) => {
     return new Promise( (resolve) => setTimeout(resolve, ms))
 }
 
-
 mongo = mongoose.connect(`mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@db.udz6mij.mongodb.net/Nurse`).then(() => {
     console.log('connect database success');
 
@@ -24,7 +23,6 @@ const connecting = async() => {
 		}catch(error){
 			return error
 		}
-
 	}
 }
 

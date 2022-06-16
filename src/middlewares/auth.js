@@ -7,15 +7,15 @@ const authMiddleware = async (req, res, next) => {
 	try {
 		const decoded = verifyToken(token)
 		result = decoded.user_id
-		console.log(result);
 		const user = await User.findById(result.sub)
-		console.log(user);
+	
 
 		if (result.v !== user.tokenVersion) {
 			return res.sendStatus(401)
 		}
 		req.user = user
 		next()
+		
 	} catch (error) {
 		res.status(500).send({ error })
 	}
