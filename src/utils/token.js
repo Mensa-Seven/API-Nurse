@@ -8,9 +8,16 @@ const createToken = (sub) => {
 
     return token
 }
-const verifyToken = (token) => {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    return decoded
+const verifyToken = (token, req, res) => {
+    try{
+        const decoded = jwt.verify(token, process.env.JWT_SECRET)
+        
+        return decoded
+
+    }catch(error){
+        res.status(401)
+    }
+    
 }
 module.exports = {
     createToken,

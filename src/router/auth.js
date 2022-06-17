@@ -63,7 +63,7 @@ router.post('/login', async(req, res) => {
 	}catch( error ){
 		res.send({
 			error
-		})
+		}) 
 	}
 	
 })

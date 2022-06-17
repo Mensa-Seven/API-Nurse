@@ -3,11 +3,9 @@ const mongoose = require('mongoose')
 const User = new mongoose.Schema( {
     frist_name:{
         type:String,
-        unique:true,
     },
     last_name:{
         type:String,
-        unique:true,       
 
     },
     email:{
@@ -16,7 +14,6 @@ const User = new mongoose.Schema( {
     },
     password:{
         type:String,
-        unique:true,
 
     },
     actor:{
@@ -26,11 +23,10 @@ const User = new mongoose.Schema( {
     },
     location:{
         type:String,
-        default:"ตำเเหน่งโรงพยาบาล"
+        default:null
     },
     tokenVersion:{
         type:Number,
-
     }
 } )
 module.exports = mongoose.model('User', User)
