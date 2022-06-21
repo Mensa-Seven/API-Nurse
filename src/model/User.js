@@ -27,6 +27,9 @@ const User = new mongoose.Schema( {
     },
     tokenVersion:{
         type:Number,
+    },
+    createdAt:{
+        type:Date
     }
 } )
 module.exports = mongoose.model('User', User)
