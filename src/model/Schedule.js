@@ -8,10 +8,11 @@ const Schedule = new mongoose.Schema({
    year:{
     type:String
    },
-   duty:[
-   
+   _duty:[
+      {
+         type:mongoose.Schema.Types.ObjectId
+      }
    ],
-
    createAt:{
     type:Date
    }

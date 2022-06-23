@@ -2,60 +2,54 @@ const User = require('../model/User.js')
 const Schedule = require('../model/Schedule.js')
 const date = new Date()
 const daysInSeptember = require('./CountDay.js')
-const CreateSchedule = async(req, res) => {
+const Duty = require('../model/Duty.js')
+const CreateSchedule = async(req, res, year) => {
     try{
     const user = await User.find()
     for(let i = 0; i< user.length; i++ ){
-        const schedule = await Schedule.find({_user:user[i]._id})
-        if(schedule.length === 0){
-            await Schedule.create({
-                _user:user[i]._id,
-                year:date.getFullYear()
+        //เช็คว่ามีข้อมูลของ ตารางของปีนี้หรือยัง
+       var uid = user[i]._id
+       const check =  await Schedule.findOne({
+            _user:uid,
+            year:year
+        })
+        if(check === null){
+            const schedule = await Schedule.create({
+                _user:uid,
+                year:year
             })
-            .then(async(data)=> {
-                
-                for(let j = 0; j<daysInSeptember; j++){
-                await Schedule.findByIdAndUpdate({_id:data._id, _user:user[i]._id},{
-                    $push:{
-                        duty:{
-                            month:date.getMonth(),
-                            slots1:{
-                                groud:NaN,
-                                shift:"ว่าง",
-                                count:0
-                            },
-                            slots2:
-                            {
-                                groud:NaN,
-                                shift:"ว่าง",
-                                count:0
-                            },
-                            slots3:{
-                                groud:NaN,
-                                shift:"ว่าง",
-                                count:0
-                            } 
-                        }
-                    }
+            const duty = await Duty.create({
+                _user:uid,
+                _schedule:schedule._id,
+                month:date.getMonth()
+            })
+            await Schedule.findByIdAndUpdate({_id:schedule._id},
+                {
+                    _duty:duty._id
+                },
+                {
+                    new:true
                 })
-
+            for(let m = 0;m < daysInSeptember; m++){
+               await Duty.findByIdAndUpdate({_id:duty._id}, {
+                $push:{
+                    slots:{
+                        group:"",
+                        shift1:"ว่าง",
+                        shift2:"ว่าง",
+                        shift3:"ว่าง",
+                        count:0
+                    }
                 }
-            })
-            
-            
+               })
+            }          
+          
         }
-      
     }
 
     }catch(error){
-        res.send({
-            message:error
-        })
+        console.log("Error function CreateSchedule", error);
     }
-}
-const CreateMonth = async(req, res) => {
-    
-
 }
 
 
